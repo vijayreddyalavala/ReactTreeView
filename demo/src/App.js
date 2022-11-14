@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import clone from 'clone';
 import Tree from 'react-d3-tree';
-import { version } from 'react-d3-tree/package.json';
 import Switch from './components/Switch';
 import MixedNodeElement from './components/MixedNodeElement';
 import PureSvgNodeElement from './components/PureSvgNodeElement';
 import MixedNodeInputElement from './components/MixedNodeInputElement';
+import MuiPaperNode from './components/MuiPaperNode';
 import './App.css';
 
 // Data examples
@@ -56,6 +56,16 @@ const customNodeFnMapping = {
       />
     ),
   },
+  paper: {
+    description: 'MUI Paper Card Component for node',
+    fn: (rd3tProps, appState) => (
+      <MuiPaperNode
+        nodeDatum={rd3tProps.nodeDatum}
+        toggleNode={rd3tProps.toggleNode}
+        orientation={appState.orientation}
+      />
+    ),
+  }
 };
 
 const countNodes = (count = 0, n) => {
@@ -96,7 +106,7 @@ class App extends Component {
       nodeSize: { x: 200, y: 200 },
       enableLegacyTransitions: false,
       transitionDuration: 500,
-      renderCustomNodeElement: customNodeFnMapping['svg'].fn,
+      renderCustomNodeElement: customNodeFnMapping['paper'].fn,
       styles: {
         nodes: {
           node: {
@@ -183,9 +193,8 @@ class App extends Component {
     }
   }
 
-  handleCustomNodeFnChange = evt => {
-    const customNodeKey = evt.target.value;
-
+  handleCustomNodeFnChange = (event) => {
+    const customNodeKey = event.target.value;
     this.setState({ renderCustomNodeElement: customNodeFnMapping[customNodeKey].fn });
   };
 
@@ -276,7 +285,6 @@ class App extends Component {
             <div className="controls-container">
               <div className="prop-container">
                 <h2 className="title">React D3 Tree</h2>
-                <h3 className="title">v{version}</h3>
                 <h3 className="title">
                   <a href="/react-d3-tree/docs">
                     <span role="img" aria-label="open book emoji">
